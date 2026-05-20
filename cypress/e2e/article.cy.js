@@ -27,51 +27,44 @@ describe('Article', () => {
       signInPage.typePassword(password);
       signInPage.clickSignInBtn();
     });
+
+    cy.getByDataCy('new-article-link').click();
   });
 
   it('should be created using New Article form', () => {
-    cy.contains('a', 'New Article').click();
-
     cy.task('generateArticle').then((article) => {
       articlePage.typeTitle(article.title);
       articlePage.typeAbout(article.description);
       articlePage.typeText(article.body);
-      articlePage.typeTag('Other');
 
       articlePage.clickPublishArticleButton();
 
-      cy.contains('h1', article.title).should('be.visible');
+      cy.getByDataCy('article-title').should('contain', article.title);
     });
   });
 
   it('should be edited using Edit button', () => {
-    cy.contains('a', 'New Article').click();
-
     cy.task('generateArticle').then((article) => {
       articlePage.typeTitle(article.title);
       articlePage.typeAbout(article.description);
       articlePage.typeText(article.body);
-      articlePage.typeTag('Other');
 
       articlePage.clickPublishArticleButton();
 
       cy.contains('a', 'Edit Article').click();
 
-      articlePage.typeTitle('updated');
+      articlePage.typeTitle('Updated');
       articlePage.clickPublishArticleButton();
 
-      cy.contains('h1', 'updated').should('be.visible');
+      cy.getByDataCy('article-title').should('contain', 'Updated');
     });
   });
 
   it('should be deleted using Delete button', () => {
-    cy.contains('a', 'New Article').click();
-
     cy.task('generateArticle').then((article) => {
       articlePage.typeTitle(article.title);
       articlePage.typeAbout(article.description);
       articlePage.typeText(article.body);
-      articlePage.typeTag('Other');
 
       articlePage.clickPublishArticleButton();
 

@@ -2,9 +2,9 @@
 /// <reference types='../support' />
 
 import HomePageObject from '../support/pages/home.pageObject';
-import SignInPageObject from '../support/pages/signIn.pageObject';
+import SignUpPageObject from '../support/pages/signUp.pageObject';
 
-const signInPage = new SignInPageObject();
+const signUpPage = new SignUpPageObject();
 const homePage = new HomePageObject();
 
 describe('Sign Up page', () => {
@@ -24,22 +24,31 @@ describe('Sign Up page', () => {
   });
 
   it('should sign up succefully', () => {
-    signInPage.visit();
-    cy.register(email, username, password);
+    signUpPage.visit();
+
+    signUpPage.typeUsername(username);
+    signUpPage.typeEmail(email);
+    signUpPage.typePassword(password);
+
+    signUpPage.clickSignUpBtn();
+
+    cy.get('div[class="swal-title"]').should(
+      'contain', 'Welcome!'
+    );
   });
 
   it('should not sign up if invalid email', () => {
     homePage.visit();
     cy.contains('a', 'Sign up').click();
 
-    cy.get('input[placeholder="Username"]').type('username');
-    cy.get('input[placeholder="Email"]').type('usermail');
-    cy.get('input[placeholder="Password"]').type('userpassword');
+    signUpPage.typeUsername(username);
+    signUpPage.typeEmail('usermail');
+    signUpPage.typePassword(password);
 
-    cy.contains('button', 'Sign up').click();
+    signUpPage.clickSignUpBtn();
 
-    cy.contains('div[class="swal-title"]', 'Registration failed!').should(
-      'be.visible'
+    cy.get('div[class="swal-title"]').should(
+      'contain', 'Registration failed!'
     );
   });
 });

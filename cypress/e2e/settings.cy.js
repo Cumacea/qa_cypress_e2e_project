@@ -26,27 +26,34 @@ describe('Settings page', () => {
     signInPage.clickSignInBtn();
   });
 
+  it('should provide an ability to log out', () => {
+    homePage.usernameLink.click();
+    cy.contains('a', 'Edit Profile Settings').click();
+
+    cy.get('.btn-outline-danger').click();
+
+    homePage.usernameLink.should('not.exist');
+  });
+
   it('should provide an ability to update username', () => {
     homePage.usernameLink.click();
     cy.contains('a', 'Edit Profile Settings').click();
 
-    cy.get('input[placeholder="Your username"]').clear();
-    cy.get('input[placeholder="Your username"]').type(user.username + '123');
+    cy.getByDataCy('settings-username').clear();
+    cy.getByDataCy('settings-username').type(user.username + '123');
 
     cy.contains('button', 'Update Settings').click();
 
     homePage.visit();
-    cy.contains('a[data-cy="username-link"]', user.username + '123');
+    cy.getByDataCy('username-link').should('contain', `${user.username}123`);
   });
 
   it('should provide an ability to update bio', () => {
     homePage.usernameLink.click();
     cy.contains('a', 'Edit Profile Settings').click();
 
-    cy.get('textarea[placeholder="Short bio about you"]').clear();
-    cy.get('textarea[placeholder="Short bio about you"]').type(
-      'Just a bio about something'
-    );
+    cy.getByDataCy('settings-bio').clear();
+    cy.getByDataCy('settings-bio').type('Just a bio about something');
 
     cy.contains('button', 'Update Settings').click();
 
@@ -61,28 +68,27 @@ describe('Settings page', () => {
     homePage.usernameLink.click();
     cy.contains('a', 'Edit Profile Settings').click();
 
-    cy.get('input[placeholder="Email"]').clear();
-    cy.get('input[placeholder="Email"]').type('testuser@gmail.test');
+    cy.getByDataCy('settings-email').clear();
+    cy.getByDataCy('settings-email').type('testuser@gmail.test');
 
     cy.contains('button', 'Update Settings').click();
+
+    cy.get('div[class="swal-title"]').should(
+      'contain', 'Update successful!'
+    );
   });
 
   it('should provide an ability to update password', () => {
     homePage.usernameLink.click();
     cy.contains('a', 'Edit Profile Settings').click();
 
-    cy.get('input[placeholder="Password"]').clear();
-    cy.get('input[placeholder="Password"]').type('password123');
+    cy.getByDataCy('settings-password').clear();
+    cy.getByDataCy('settings-password').type('Password123');
 
     cy.contains('button', 'Update Settings').click();
-  });
 
-  it('should provide an ability to log out', () => {
-    homePage.usernameLink.click();
-    cy.contains('a', 'Edit Profile Settings').click();
-
-    cy.get('.btn-outline-danger').click();
-
-    homePage.usernameLink.should('not.exist');
+    cy.get('div[class="swal-title"]').should(
+      'contain', 'Update successful!'
+    );
   });
 });

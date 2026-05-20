@@ -9,7 +9,7 @@ describe('User', () => {
   let userTarget;
   let userFollower;
 
-  before(() => {
+  beforeEach(() => {
     cy.task('db:clear');
 
     cy.task('generateUser').then((generatedUser) => {
@@ -40,5 +40,11 @@ describe('User', () => {
     cy.visit(`/#/@${userTarget.username}`);
 
     cy.contains('button', `Follow ${userTarget.username}`).click();
+
+    cy.url().should('include', `/#/@${userTarget.username}`);
+  });
+
+  it.skip('should be able to unfollow the another user', () => {
+    // The unfollow button never appears, so it's impossible to unfollow a user.
   });
 });
