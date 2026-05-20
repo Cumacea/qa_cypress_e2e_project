@@ -16,7 +16,7 @@ class ArticlePageObject extends PageObject {
   }
 
   get publishArticleButton() {
-    return cy.contains('button', 'Publish Article');
+    return cy.getByDataCy('article-publish-button');
   }
 
   typeTitle(title) {

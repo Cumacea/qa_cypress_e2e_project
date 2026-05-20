@@ -21,30 +21,27 @@ describe('Settings page', () => {
       signInPage.typeEmail(user.email);
       signInPage.typePassword(user.password);
       signInPage.clickSignInBtn();
+
+      homePage.usernameLink.click();
+      cy.getByDataCy('edit-profile-btn').click();
     });
   });
 
   it('should provide an ability to update username', () => {
-    homePage.usernameLink.click();
-    cy.contains('a', 'Edit Profile Settings').click();
-
     cy.getByDataCy('settings-username').clear();
     cy.getByDataCy('settings-username').type(user.username + '123');
 
-    cy.contains('button', 'Update Settings').click();
+    cy.getByDataCy('update-settings-btn').click();
 
     homePage.visit();
     cy.getByDataCy('username-link').should('contain', `${user.username}123`);
   });
 
   it('should provide an ability to update bio', () => {
-    homePage.usernameLink.click();
-    cy.contains('a', 'Edit Profile Settings').click();
-
     cy.getByDataCy('settings-bio').clear();
     cy.getByDataCy('settings-bio').type('Just a bio about something');
 
-    cy.contains('button', 'Update Settings').click();
+    cy.getByDataCy('update-settings-btn').click();
 
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(1500);
@@ -54,13 +51,10 @@ describe('Settings page', () => {
   });
 
   it('should provide an ability to update an email', () => {
-    homePage.usernameLink.click();
-    cy.contains('a', 'Edit Profile Settings').click();
-
     cy.getByDataCy('settings-email').clear();
     cy.getByDataCy('settings-email').type('testuser@gmail.test');
 
-    cy.contains('button', 'Update Settings').click();
+    cy.getByDataCy('update-settings-btn').click();
 
     cy.get('div[class="swal-title"]').should(
       'contain', 'Update successful!'
@@ -68,13 +62,10 @@ describe('Settings page', () => {
   });
 
   it('should provide an ability to update password', () => {
-    homePage.usernameLink.click();
-    cy.contains('a', 'Edit Profile Settings').click();
-
     cy.getByDataCy('settings-password').clear();
     cy.getByDataCy('settings-password').type('Password123');
 
-    cy.contains('button', 'Update Settings').click();
+    cy.getByDataCy('update-settings-btn').click();
 
     cy.get('div[class="swal-title"]').should(
       'contain', 'Update successful!'
@@ -82,9 +73,6 @@ describe('Settings page', () => {
   });
 
   it('should provide an ability to log out', () => {
-    homePage.usernameLink.click();
-    cy.contains('a', 'Edit Profile Settings').click();
-
     cy.get('.btn-outline-danger').click();
 
     homePage.usernameLink.should('not.exist');

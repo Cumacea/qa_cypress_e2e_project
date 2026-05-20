@@ -49,6 +49,7 @@
               :disabled="publishing_article"
               class="btn btn-lg pull-xs-right btn-primary"
               type="submit"
+              data-cy="article-publish-button"
             >
               Publish Article
             </button>

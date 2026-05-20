@@ -39,8 +39,24 @@ describe('User', () => {
 
     cy.visit(`/#/@${userTarget.username}`);
 
-    cy.contains('button', `Follow ${userTarget.username}`).click();
+    cy.getByDataCy('follow-btn').click();
 
     cy.url().should('include', `/#/@${userTarget.username}`);
+  });
+
+  it('should be able to unfollow another user', () => {
+    signInPage.visit();
+
+    signInPage.typeEmail(userFollower.email);
+    signInPage.typePassword(userFollower.password);
+    signInPage.clickSignInBtn();
+
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(1500);
+    cy.visit(`/#/@${userTarget.username}`);
+
+    cy.getByDataCy('follow-btn').click();
+    cy.getByDataCy('follow-btn').click();
+    cy.getByDataCy('follow-btn').should('contain', 'Follow');
   });
 });
