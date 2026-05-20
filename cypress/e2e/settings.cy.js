@@ -10,29 +10,18 @@ const homePage = new HomePageObject();
 describe('Settings page', () => {
   let user;
 
-  before(() => {
+  beforeEach(() => {
     cy.task('db:clear');
+
     cy.task('generateUser').then((generateUser) => {
       user = generateUser;
       cy.register(user.email, user.username, user.password);
+
+      signInPage.visit();
+      signInPage.typeEmail(user.email);
+      signInPage.typePassword(user.password);
+      signInPage.clickSignInBtn();
     });
-  });
-
-  beforeEach(() => {
-    signInPage.visit();
-
-    signInPage.typeEmail(user.email);
-    signInPage.typePassword(user.password);
-    signInPage.clickSignInBtn();
-  });
-
-  it('should provide an ability to log out', () => {
-    homePage.usernameLink.click();
-    cy.contains('a', 'Edit Profile Settings').click();
-
-    cy.get('.btn-outline-danger').click();
-
-    homePage.usernameLink.should('not.exist');
   });
 
   it('should provide an ability to update username', () => {
@@ -90,5 +79,14 @@ describe('Settings page', () => {
     cy.get('div[class="swal-title"]').should(
       'contain', 'Update successful!'
     );
+  });
+
+  it('should provide an ability to log out', () => {
+    homePage.usernameLink.click();
+    cy.contains('a', 'Edit Profile Settings').click();
+
+    cy.get('.btn-outline-danger').click();
+
+    homePage.usernameLink.should('not.exist');
   });
 });

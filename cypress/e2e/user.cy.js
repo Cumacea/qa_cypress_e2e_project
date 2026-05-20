@@ -43,8 +43,4 @@ describe('User', () => {
 
     cy.url().should('include', `/#/@${userTarget.username}`);
   });
-
-  it.skip('should be able to unfollow the another user', () => {
-    // The unfollow button never appears, so it's impossible to unfollow a user.
-  });
 });
