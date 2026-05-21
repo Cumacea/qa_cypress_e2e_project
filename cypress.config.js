@@ -1,7 +1,6 @@
 const { defineConfig } = require('cypress');
 const { faker } = require('@faker-js/faker');
 const { clear } = require('./server/db');
-const { seed } = require('./server/db');
 const {
   addMatchImageSnapshotPlugin
 } = require('cypress-image-snapshot/plugin');
@@ -29,11 +28,6 @@ module.exports = defineConfig({
         },
         async 'db:clear'() {
           await clear();
-
-          return null;
-        },
-        async 'db:seed'() {
-          await seed();
 
           return null;
         }
